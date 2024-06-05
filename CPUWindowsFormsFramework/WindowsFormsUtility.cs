@@ -2,12 +2,16 @@
 {
     public class WindowsFormsUtility
     {
-        public static void SetListBinding(ComboBox lst, DataTable sourcedt, DataTable? targetdt, string tablename)
+        public static void SetListBinding(ComboBox lst, DataTable sourcedt, DataTable? targetdt, string tablename, BindingSource bindsource = null)
         {
             lst.DataSource = sourcedt;
             lst.ValueMember = tablename + "Id";
             lst.DisplayMember = lst.Name.Substring(3);
-            if (targetdt != null)
+            if (targetdt != null && bindsource != null)
+            {
+                lst.DataBindings.Add("SelectedValue", bindsource, lst.ValueMember, false, DataSourceUpdateMode.OnPropertyChanged);
+            }
+            else if (targetdt != null && bindsource == null)
             {
                 lst.DataBindings.Add("SelectedValue", targetdt, lst.ValueMember, false, DataSourceUpdateMode.OnPropertyChanged);
             }
